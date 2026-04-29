@@ -1,5 +1,6 @@
 {
   "owner": "dawidd6",
   "name": "action-download-artifact",
-  "visibility": ""
+  "visibility": "internal",
+  "description": ":gear: A GitHub Action to download an artifact associated with given workflow and commit or other criteria"
 }
