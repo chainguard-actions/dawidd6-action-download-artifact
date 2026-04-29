@@ -1,6 +1,12 @@
 # dawidd6/action-download-artifact
 
-Hardened GitHub Action by [Chainguard](https://www.chainguard.dev).
+Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at [https://github.com/dawidd6/action-download-artifact](https://github.com/dawidd6/action-download-artifact).
+
+## Versions
+
+| Version | Tag | Upstream commit |
+|---------|-----|-----------------|
+| v19 | [`v19`](https://github.com/chainguard-actions/action-download-artifact/tree/v19) | — |
 
 ## Privacy
 
