@@ -1,4 +1,6 @@
 {
-  "upstream": "dawidd6/action-download-artifact",
-  "version": "v19"
+  "owner": "dawidd6",
+  "repo": "action-download-artifact",
+  "version": "",
+  "url": "https://github.com/dawidd6/action-download-artifact"
 }
