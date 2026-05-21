@@ -8,7 +8,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 | Version | Tag | Upstream commit |
 |---------|-----|-----------------|
-| v19 | [`v19`](https://github.com/chainguard-actions/dawidd6--action-download-artifact/tree/v19) | — |
+| v19 | [`v19`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v19) | — |
 
 ## Privacy
 
