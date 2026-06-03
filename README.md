@@ -1,6 +1,6 @@
 # dawidd6/action-download-artifact
 
-:gear: A GitHub Action to download an artifact associated with given workflow and commit or other criteria
+Download and extract an artifact associated with given workflow and commit or other criteria
 
 Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at [https://github.com/dawidd6/action-download-artifact](https://github.com/dawidd6/action-download-artifact).
 
