@@ -9,6 +9,7 @@ jobs:
       - id: action
         uses: .
         with:
+          github_token: ${{ github.token }}
           workflow: ci.yml
           commit: abc1234def5678901234567890123456789abcde
           ref: main

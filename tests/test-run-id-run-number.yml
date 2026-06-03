@@ -1,0 +1,35 @@
+name: Test run_id and run_number inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action-run-id
+        uses: .
+        with:
+          github_token: ${{ github.token }}
+          run_id: 1
+          dry_run: true
+          if_no_artifact_found: ignore
+      - name: Assert run_id action completed
+        env:
+          FOUND: ${{ steps.action-run-id.outputs.found_artifact }}
+        run: |
+          echo "found_artifact (run_id): $FOUND"
+          echo "PASS: action completed with run_id input"
+      - id: action-run-number
+        uses: .
+        with:
+          github_token: ${{ github.token }}
+          workflow: ci.yml
+          run_number: 1
+          dry_run: true
+          if_no_artifact_found: ignore
+      - name: Assert run_number action completed
+        env:
+          FOUND: ${{ steps.action-run-number.outputs.found_artifact }}
+        run: |
+          echo "found_artifact (run_number): $FOUND"
+          echo "PASS: action completed with run_number input"

@@ -9,6 +9,7 @@ jobs:
       - id: action
         uses: .
         with:
+          github_token: ${{ github.token }}
           workflow: ci.yml
           pr: 1
           dry_run: true

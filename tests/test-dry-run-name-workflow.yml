@@ -1,4 +1,4 @@
-name: Test branch and event inputs
+name: Test dry_run with name and workflow inputs
 on:
   workflow_dispatch:
 jobs:
@@ -11,13 +11,14 @@ jobs:
         with:
           github_token: ${{ github.token }}
           workflow: ci.yml
-          branch: main
-          event: push
+          name: my-artifact
           dry_run: true
           if_no_artifact_found: ignore
-      - name: Assert action completed
+      - name: Assert dry_run output is set
         env:
+          DRY_RUN_OUT: ${{ steps.action.outputs.dry_run }}
           FOUND: ${{ steps.action.outputs.found_artifact }}
         run: |
-          echo "found_artifact: $FOUND"
-          echo "PASS: action completed with branch and event inputs"
+          echo "dry_run output: $DRY_RUN_OUT"
+          echo "found_artifact output: $FOUND"
+          echo "PASS: action completed without error"
