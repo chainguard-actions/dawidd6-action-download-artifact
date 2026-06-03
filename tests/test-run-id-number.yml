@@ -1,0 +1,21 @@
+name: Test run_id and run_number inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          run_id: 1234567890
+          run_number: 1
+          dry_run: true
+          if_no_artifact_found: ignore
+      - name: Assert action completed
+        env:
+          FOUND: ${{ steps.action.outputs.found_artifact }}
+        run: |
+          echo "found_artifact: $FOUND"
+          echo "PASS: action completed with run_id and run_number inputs"
