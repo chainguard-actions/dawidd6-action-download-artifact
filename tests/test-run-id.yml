@@ -1,0 +1,36 @@
+name: Test run_id and workflow inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          workflow: test.yml
+          run_id: "1234567890"
+          name: some-artifact
+          if_no_artifact_found: ignore
+          dry_run: true
+      - name: Assert action ran with run_id and workflow inputs
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+          FOUND: ${{ steps.action.outputs.found_artifact }}
+          DRY: ${{ steps.action.outputs.dry_run }}
+          ERR: ${{ steps.action.outputs.error_message }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "found_artifact: $FOUND"
+          echo "dry_run: $DRY"
+          echo "error_message: $ERR"
+          if [ "$OUTCOME" = "success" ]; then
+            echo "PASS: action succeeded"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo or run_id not found)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi

@@ -1,6 +1,16 @@
 {
   "owner": "dawidd6",
   "repo": "action-download-artifact",
-  "version": "",
-  "url": "https://github.com/dawidd6/action-download-artifact"
+  "version": "v22",
+  "commit_sha": "7f871e041ed7fe12467d2d4196da8a466c5311ff",
+  "url": "https://github.com/dawidd6/action-download-artifact",
+  "policy_sha": "d636be7e43ef829af6e853da6b3c7566db9f72fe",
+  "test_policy_sha": "843adf9e4b8f85d0c08b27b9d0b09dd094b54702",
+  "test_agent_version": "2",
+  "harden_agent_version": "2",
+  "node_artifact": {
+    "gcs_uri": "gs://prod-actions-node-artifacts/node-artifacts/dawidd6/action-download-artifact/v22/sha256-1c7fe7380d0d29150174ca10cf33b979549d8c0ad6f590f609732f1609921370.tar.gz",
+    "sha256": "1c7fe7380d0d29150174ca10cf33b979549d8c0ad6f590f609732f1609921370",
+    "size_bytes": 23066826
+  }
 }
