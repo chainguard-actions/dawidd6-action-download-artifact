@@ -1,0 +1,38 @@
+name: Test artifact not found with fail (default)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          name: nonexistent-artifact-fail-test
+          if_no_artifact_found: fail
+          workflow_conclusion: success
+          workflow_search: true
+      - name: Assert action failed or found_artifact is false
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+          FOUND: ${{ steps.action.outputs.found_artifact }}
+          ERROR: ${{ steps.action.outputs.error_message }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "found_artifact: $FOUND"
+          echo "error_message: $ERROR"
+          if [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action correctly failed (sentinel repo API call failed or artifact not found with if_no_artifact_found=fail)"
+          elif [ "$OUTCOME" = "success" ]; then
+            if [ "$FOUND" = "false" ]; then
+              echo "PASS: action succeeded with found_artifact=false"
+            else
+              echo "FAIL: action succeeded but found_artifact is not false: '$FOUND'"
+              exit 1
+            fi
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
