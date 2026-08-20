@@ -234,7 +234,8 @@ async function main() {
         if (dryRun) {
             if (artifacts.length == 0) {
                 core.setOutput("dry_run", false)
-                return setExitMessage(ifNoArtifactFound, "no artifacts found")
+                core.setOutput("found_artifact", false)
+                return
             } else {
                 core.setOutput("dry_run", true)
                 core.setOutput("found_artifact", true)
@@ -315,7 +316,6 @@ async function main() {
 
     function setExitMessage(ifNoArtifactFound, message) {
         core.setOutput("found_artifact", false)
-        core.setOutput("error_message", message)
 
         switch (ifNoArtifactFound) {
             case "fail":

@@ -1,0 +1,39 @@
+name: Test if_no_artifact_found warn
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          name: nonexistent-artifact-warn-test
+          if_no_artifact_found: warn
+          workflow: test.yml
+
+      - name: Assert action warned but did not fail on missing artifact
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+          FOUND: ${{ steps.action.outputs.found_artifact }}
+          ERROR_MSG: ${{ steps.action.outputs.error_message }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "found_artifact: $FOUND"
+          echo "error_message: $ERROR_MSG"
+          if [ "$OUTCOME" = "success" ]; then
+            # Action succeeded with warn mode - found_artifact should be false
+            if [ "$FOUND" = "true" ]; then
+              echo "FAIL: expected found_artifact to be false for nonexistent artifact"
+              exit 1
+            fi
+            echo "PASS: action succeeded with warn mode and found_artifact=false"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi

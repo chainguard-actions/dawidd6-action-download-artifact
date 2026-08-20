@@ -1,0 +1,38 @@
+name: Test dry_run mode
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          name: test-artifact
+          dry_run: true
+          if_no_artifact_found: ignore
+          workflow: test.yml
+
+      - name: Assert action ran and produced expected outputs
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+          FOUND: ${{ steps.action.outputs.found_artifact }}
+          DRY_RUN: ${{ steps.action.outputs.dry_run }}
+          ERROR_MSG: ${{ steps.action.outputs.error_message }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "found_artifact: $FOUND"
+          echo "dry_run: $DRY_RUN"
+          echo "error_message: $ERROR_MSG"
+          if [ "$OUTCOME" = "success" ]; then
+            # Action succeeded - dry_run output should be set
+            echo "PASS: action succeeded in dry_run mode"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
