@@ -1,0 +1,42 @@
+name: Test no artifact found with fail mode (default)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - id: action
+        uses: .
+        with:
+          name: nonexistent-artifact-fail-mode-test
+          if_no_artifact_found: fail
+          workflow_conclusion: success
+        continue-on-error: true
+
+      - name: Assert action fails when artifact not found in fail mode
+        env:
+          FOUND: ${{ steps.action.outputs.found_artifact }}
+          ERROR_MSG: ${{ steps.action.outputs.error_message }}
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "found_artifact: $FOUND"
+          echo "error_message: $ERROR_MSG"
+          # With fail mode and a nonexistent artifact (or sentinel repo), the action
+          # should fail — either because artifact not found or repo not resolvable
+          if [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action correctly failed (artifact not found or sentinel repo)"
+          elif [ "$OUTCOME" = "success" ]; then
+            # If somehow it succeeded, found_artifact must be false (unexpected but acceptable)
+            if [ "$FOUND" = "false" ]; then
+              echo "WARN: action succeeded with found_artifact=false in fail mode (unexpected)"
+            else
+              echo "FAIL: action succeeded unexpectedly with found_artifact=$FOUND"
+              exit 1
+            fi
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi

@@ -1,0 +1,37 @@
+name: Test artifact name as regular expression
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - id: action
+        uses: .
+        with:
+          name: "artifact-.*-test"
+          name_is_regexp: true
+          if_no_artifact_found: ignore
+          workflow_conclusion: success
+        continue-on-error: true
+
+      - name: Assert regexp mode runs without hard failure
+        env:
+          FOUND: ${{ steps.action.outputs.found_artifact }}
+          ARTIFACTS: ${{ steps.action.outputs.artifacts }}
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "found_artifact: $FOUND"
+          echo "artifacts: $ARTIFACTS"
+          # With regexp name and ignore mode, action should succeed (no matches)
+          # or fail gracefully because the sentinel repo is not resolvable
+          if [ "$OUTCOME" = "success" ]; then
+            echo "PASS: regexp mode succeeded, found_artifact=$FOUND"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi

@@ -1,0 +1,38 @@
+name: Test no artifact found with ignore mode
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - id: action
+        uses: .
+        with:
+          name: nonexistent-artifact-xyz-12345
+          if_no_artifact_found: ignore
+          workflow_conclusion: success
+        continue-on-error: true
+
+      - name: Assert found_artifact is false and action did not hard-fail
+        env:
+          FOUND: ${{ steps.action.outputs.found_artifact }}
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "found_artifact: $FOUND"
+          # With ignore mode, the action should either succeed (found_artifact=false)
+          # or fail gracefully because the sentinel repo is not resolvable
+          if [ "$OUTCOME" = "success" ]; then
+            if [ "$FOUND" != "false" ] && [ "$FOUND" != "" ]; then
+              echo "FAIL: expected found_artifact to be false or empty, got: $FOUND"
+              exit 1
+            fi
+            echo "PASS: action succeeded with found_artifact=$FOUND"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi

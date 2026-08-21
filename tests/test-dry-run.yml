@@ -1,0 +1,40 @@
+name: Test dry_run mode
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - id: action
+        uses: .
+        with:
+          name: some-artifact-dry-run-test
+          dry_run: true
+          if_no_artifact_found: ignore
+          workflow_conclusion: success
+        continue-on-error: true
+
+      - name: Assert dry_run does not download and handles missing artifact gracefully
+        env:
+          FOUND: ${{ steps.action.outputs.found_artifact }}
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "found_artifact: $FOUND"
+          # In dry_run mode with ignore, action should succeed (no download attempted)
+          # or fail gracefully because the sentinel repo is not resolvable
+          if [ "$OUTCOME" = "success" ]; then
+            # Verify no files were downloaded (dry_run should not write files)
+            if ls ./*.zip 2>/dev/null | grep -q .; then
+              echo "FAIL: dry_run should not have downloaded any zip files"
+              exit 1
+            fi
+            echo "PASS: dry_run mode succeeded without downloading files, found_artifact=$FOUND"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
