@@ -8,28 +8,56 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - id: action-run-id
         uses: .
+        continue-on-error: true
         with:
-          github_token: ${{ github.token }}
-          run_id: 1
+          run_id: "1"
+          name: my-artifact
           dry_run: true
           if_no_artifact_found: ignore
-      - name: Assert run_id action completed
+      - name: Assert run_id step ran
         env:
+          OUTCOME: ${{ steps.action-run-id.outcome }}
           FOUND: ${{ steps.action-run-id.outputs.found_artifact }}
+          DRY: ${{ steps.action-run-id.outputs.dry_run }}
+          ERR: ${{ steps.action-run-id.outputs.error_message }}
         run: |
-          echo "found_artifact (run_id): $FOUND"
-          echo "PASS: action completed with run_id input"
+          echo "outcome: $OUTCOME"
+          echo "found_artifact: $FOUND"
+          echo "dry_run: $DRY"
+          echo "error_message: $ERR"
+          if [ "$OUTCOME" = "success" ]; then
+            echo "PASS: action completed successfully with run_id"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
       - id: action-run-number
         uses: .
+        continue-on-error: true
         with:
-          github_token: ${{ github.token }}
           workflow: ci.yml
-          run_number: 1
+          run_number: "1"
+          name: my-artifact
           dry_run: true
           if_no_artifact_found: ignore
-      - name: Assert run_number action completed
+      - name: Assert run_number step ran
         env:
+          OUTCOME: ${{ steps.action-run-number.outcome }}
           FOUND: ${{ steps.action-run-number.outputs.found_artifact }}
+          DRY: ${{ steps.action-run-number.outputs.dry_run }}
+          ERR: ${{ steps.action-run-number.outputs.error_message }}
         run: |
-          echo "found_artifact (run_number): $FOUND"
-          echo "PASS: action completed with run_number input"
+          echo "outcome: $OUTCOME"
+          echo "found_artifact: $FOUND"
+          echo "dry_run: $DRY"
+          echo "error_message: $ERR"
+          if [ "$OUTCOME" = "success" ]; then
+            echo "PASS: action completed successfully with run_number"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi

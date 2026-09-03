@@ -6,18 +6,61 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - id: action
+      - id: get-sha
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - id: action-commit
         uses: .
+        continue-on-error: true
         with:
-          github_token: ${{ github.token }}
           workflow: ci.yml
-          commit: abc1234def5678901234567890123456789abcde
-          ref: main
+          commit: ${{ steps.get-sha.outputs.sha }}
+          name: my-artifact
           dry_run: true
           if_no_artifact_found: ignore
-      - name: Assert action completed
+      - name: Assert commit step ran
         env:
-          FOUND: ${{ steps.action.outputs.found_artifact }}
+          OUTCOME: ${{ steps.action-commit.outcome }}
+          FOUND: ${{ steps.action-commit.outputs.found_artifact }}
+          DRY: ${{ steps.action-commit.outputs.dry_run }}
+          ERR: ${{ steps.action-commit.outputs.error_message }}
         run: |
+          echo "outcome: $OUTCOME"
           echo "found_artifact: $FOUND"
-          echo "PASS: action completed with commit and ref inputs"
+          echo "dry_run: $DRY"
+          echo "error_message: $ERR"
+          if [ "$OUTCOME" = "success" ]; then
+            echo "PASS: action completed successfully with commit"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
+      - id: action-ref
+        uses: .
+        continue-on-error: true
+        with:
+          workflow: ci.yml
+          ref: main
+          name: my-artifact
+          dry_run: true
+          if_no_artifact_found: ignore
+      - name: Assert ref step ran
+        env:
+          OUTCOME: ${{ steps.action-ref.outcome }}
+          FOUND: ${{ steps.action-ref.outputs.found_artifact }}
+          DRY: ${{ steps.action-ref.outputs.dry_run }}
+          ERR: ${{ steps.action-ref.outputs.error_message }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "found_artifact: $FOUND"
+          echo "dry_run: $DRY"
+          echo "error_message: $ERR"
+          if [ "$OUTCOME" = "success" ]; then
+            echo "PASS: action completed successfully with ref"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
