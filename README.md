@@ -13,6 +13,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 | v22 | [`v22`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v22) | [`7f871e0`](https://github.com/dawidd6/action-download-artifact/commit/7f871e041ed7fe12467d2d4196da8a466c5311ff) |
 | v23 | [`v23`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v23) | [`57aa996`](https://github.com/dawidd6/action-download-artifact/commit/57aa996fc1713cc1579039614f4645a7f4841fd4) |
 | v24 | [`v24`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v24) | [`d63b86a`](https://github.com/dawidd6/action-download-artifact/commit/d63b86af1b34672e53c440b1b83979861906bad7) |
+| v25 | [`v25`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v25) | [`634d83b`](https://github.com/dawidd6/action-download-artifact/commit/634d83b91986fcec9be314054943fa5c976aeb0e) |
 
 ## Privacy
 
