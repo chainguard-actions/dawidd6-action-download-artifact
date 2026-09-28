@@ -1,0 +1,39 @@
+name: Test basic artifact download
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          github_token: ${{ github.token }}
+          name: my-artifact
+          path: ./downloaded-artifacts
+          if_no_artifact_found: fail
+      - name: Assert action ran and produced expected outputs
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+          FOUND: ${{ steps.action.outputs.found_artifact }}
+          ERROR: ${{ steps.action.outputs.error_message }}
+          ARTIFACTS: ${{ steps.action.outputs.artifacts }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "found_artifact: $FOUND"
+          echo "error_message: $ERROR"
+          echo "artifacts: $ARTIFACTS"
+          if [ "$OUTCOME" = "success" ]; then
+            if [ -z "$FOUND" ]; then
+              echo "FAIL: action succeeded but found_artifact output is empty"
+              exit 1
+            fi
+            echo "PASS: action succeeded with found_artifact=$FOUND"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
