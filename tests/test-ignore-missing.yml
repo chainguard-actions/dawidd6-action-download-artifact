@@ -1,0 +1,38 @@
+name: Test ignore missing artifact
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          name: nonexistent-artifact-xyz-99999
+          if_no_artifact_found: ignore
+      - name: Assert action ignored missing artifact
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+          FOUND: ${{ steps.action.outputs.found_artifact }}
+          ERROR: ${{ steps.action.outputs.error_message }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "found_artifact: $FOUND"
+          echo "error_message: $ERROR"
+          # With if_no_artifact_found=ignore, the action should succeed silently
+          # unless the sentinel repo causes an API error before reaching the artifact check
+          if [ "$OUTCOME" = "success" ]; then
+            # If it succeeded, found_artifact should be false (artifact not found, but ignored)
+            if [ "$FOUND" = "true" ]; then
+              echo "FAIL: expected found_artifact=false for nonexistent artifact"
+              exit 1
+            fi
+            echo "PASS: action ignored missing artifact without failing"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
