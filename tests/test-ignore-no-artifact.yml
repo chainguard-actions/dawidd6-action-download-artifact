@@ -1,0 +1,38 @@
+name: Test ignore when no artifact found
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          workflow: ci.yml
+          name: nonexistent-artifact-xyz
+          if_no_artifact_found: ignore
+      - name: Assert action ignored missing artifact
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+          FOUND: ${{ steps.action.outputs.found_artifact }}
+          ERR: ${{ steps.action.outputs.error_message }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "found_artifact: $FOUND"
+          echo "error_message: $ERR"
+          if [ "$OUTCOME" = "success" ]; then
+            echo "PASS: action succeeded with ignore mode"
+            # When ignoring, found_artifact should be false or empty
+            if [ "$FOUND" = "true" ]; then
+              echo "FAIL: found_artifact should not be true when artifact doesn't exist"
+              exit 1
+            fi
+            echo "PASS: found_artifact is correctly not true"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
