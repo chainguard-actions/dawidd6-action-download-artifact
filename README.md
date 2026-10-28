@@ -6,17 +6,17 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 ## Versions
 
-| Version | Tag | Upstream commit |
-|---------|-----|-----------------|
-| v19 | [`v19`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v19) | [`8a33849`](https://github.com/dawidd6/action-download-artifact/commit/8a338493df3d275e4a7a63bcff3b8fe97e51a927) |
-| v21 | [`v21`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v21) | [`b6e2e70`](https://github.com/dawidd6/action-download-artifact/commit/b6e2e70617bc3265edd6dab6c906732b2f1ae151) |
-| v22 | [`v22`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v22) | [`7f871e0`](https://github.com/dawidd6/action-download-artifact/commit/7f871e041ed7fe12467d2d4196da8a466c5311ff) |
-| v23 | [`v23`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v23) | [`57aa996`](https://github.com/dawidd6/action-download-artifact/commit/57aa996fc1713cc1579039614f4645a7f4841fd4) |
-| v24 | [`v24`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v24) | [`d63b86a`](https://github.com/dawidd6/action-download-artifact/commit/d63b86af1b34672e53c440b1b83979861906bad7) |
-| v25 | [`v25`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v25) | [`634d83b`](https://github.com/dawidd6/action-download-artifact/commit/634d83b91986fcec9be314054943fa5c976aeb0e) |
-| v26 | [`v26`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v26) | [`27e4ae6`](https://github.com/dawidd6/action-download-artifact/commit/27e4ae67c24b67d3b54bc6d6a45475be1e28031b) |
-| v27 | [`v27`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v27) | [`eab87c9`](https://github.com/dawidd6/action-download-artifact/commit/eab87c9830c39eff17e5a6eadb20bfb4bc880477) |
-| v6 | [`v6`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v6) | [`bf251b5`](https://github.com/dawidd6/action-download-artifact/commit/bf251b5aa9c2f7eeb574a96ee720e24f801b7c11) |
+| Version | Tag | Upstream commit | Hardening report |
+|---------|-----|-----------------|------------------|
+| v19 | [`v19`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v19) | [`8a33849`](https://github.com/dawidd6/action-download-artifact/commit/8a338493df3d275e4a7a63bcff3b8fe97e51a927) | [`HARDENING.md`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/blob/v19/HARDENING.md) |
+| v21 | [`v21`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v21) | [`b6e2e70`](https://github.com/dawidd6/action-download-artifact/commit/b6e2e70617bc3265edd6dab6c906732b2f1ae151) | [`HARDENING.md`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/blob/v21/HARDENING.md) |
+| v22 | [`v22`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v22) | [`7f871e0`](https://github.com/dawidd6/action-download-artifact/commit/7f871e041ed7fe12467d2d4196da8a466c5311ff) | [`HARDENING.md`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/blob/v22/HARDENING.md) |
+| v23 | [`v23`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v23) | [`57aa996`](https://github.com/dawidd6/action-download-artifact/commit/57aa996fc1713cc1579039614f4645a7f4841fd4) | [`HARDENING.md`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/blob/v23/HARDENING.md) |
+| v24 | [`v24`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v24) | [`d63b86a`](https://github.com/dawidd6/action-download-artifact/commit/d63b86af1b34672e53c440b1b83979861906bad7) | [`HARDENING.md`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/blob/v24/HARDENING.md) |
+| v25 | [`v25`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v25) | [`634d83b`](https://github.com/dawidd6/action-download-artifact/commit/634d83b91986fcec9be314054943fa5c976aeb0e) | [`HARDENING.md`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/blob/v25/HARDENING.md) |
+| v26 | [`v26`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v26) | [`27e4ae6`](https://github.com/dawidd6/action-download-artifact/commit/27e4ae67c24b67d3b54bc6d6a45475be1e28031b) | [`HARDENING.md`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/blob/v26/HARDENING.md) |
+| v27 | [`v27`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v27) | [`eab87c9`](https://github.com/dawidd6/action-download-artifact/commit/eab87c9830c39eff17e5a6eadb20bfb4bc880477) | [`HARDENING.md`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/blob/v27/HARDENING.md) |
+| v6 | [`v6`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/tree/v6) | [`bf251b5`](https://github.com/dawidd6/action-download-artifact/commit/bf251b5aa9c2f7eeb574a96ee720e24f801b7c11) | [`HARDENING.md`](https://github.com/chainguard-actions/dawidd6-action-download-artifact/blob/v6/HARDENING.md) |
 
 ## Privacy
 
