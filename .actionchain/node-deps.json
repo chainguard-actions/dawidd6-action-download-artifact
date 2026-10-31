@@ -1,0 +1,14 @@
+{
+  "status": "unbundlable",
+  "entries": [
+    {
+      "path": "main.js",
+      "status": "unbundlable",
+      "reason": "indirect-require: Indirect calls to \"require\" will not be bundled",
+      "warnings": [
+        "indirect-require: Indirect calls to \"require\" will not be bundled",
+        "ignored-dynamic-import: Importing \"supports-color\" was allowed even though it could not be resolved because dynamic import failures appear to be handled here:"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+name: Test no matching run with if_no_artifact_found=warn
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          repo: dawidd6/action-download-artifact
+          workflow_search: "true"
+          commit: "0000000000000000000000000000000000000000"
+          if_no_artifact_found: warn
+          dry_run: "true"
+          path: ./warn-out
+      - name: Assert action succeeded with found_artifact=false
+        env:
+          FOUND: ${{ steps.action.outputs.found_artifact }}
+        run: |
+          echo "found_artifact: $FOUND"
+          if [ "$FOUND" != "false" ]; then
+            echo "FAIL: expected found_artifact=false"
+            exit 1
+          fi
+          echo "PASS"
